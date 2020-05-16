@@ -6,6 +6,8 @@ import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 
+import * as constants from '../../../store/reducer';
+
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -129,14 +131,12 @@ class ContactData extends Component {
         console.log('form data', formData);
 
         //price'ı da queryString ile gecti, ornek de olsa GECIRMEM!!!
-        //o kadar da degil!! redux gelene kadar boyle yapmış. YAPTIRMAM!
-        const sum = Object.keys( this.props.ingredients )
-            .map( igKey => {
-                return this.props.ingredients[igKey];
-            } )
-            .reduce( ( sum, el ) => {
-                return sum + el;
-            }, 4);
+        //o kadar da degil!! redux gelene kadar boyle yapmış. YAPTIRMAM!        
+
+        const sum = Object.keys(this.props.ingredients).reduce( (sum, el) => {
+            console.log("SUM: " + el)        
+            return sum + (this.props.ingredients[el] * constants.INGREDIENT_PRICES[el]);
+            }, constants.INITIAL_PRICE);            
 
         console.log('SUM:' +sum);
         this.setState( { loading: true } );
