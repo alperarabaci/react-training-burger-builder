@@ -3,28 +3,12 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 
 import { Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
+import { connect } from 'react-redux';
 
 class Checkout extends Component {
 
-    state = {
-        ingredients: {
-            salad: 0,
-            meat: 0,
-            cheese: 0,
-            bacon: 0
-        },
-        price:0        
-    };
-
     componentWillMount() {
-        const query = new URLSearchParams(this.props.location.search);
-        const ingredients = {};
-        /**BIR SAAT DEBUG YAPTIM BURAYA GELEN KOD STRING ONDAN BURGER YANLIS CALISIYORDU */
-        /** + String INT Olsun diye */
-        for(let param of query.entries()){
-            ingredients[param[0]] = +param[1];
-        }
-        this.setState({ingredients: ingredients});
+
     }
 
     checkoutCancelledHandler = () => {
@@ -36,19 +20,31 @@ class Checkout extends Component {
     }
 
      render() {
-         console.log("CHECKOUT:", this.state.ingredients);         
+         console.log("CHECKOUT:", this.props.ingredients);         
          return (
             <div>
-                <CheckoutSummary ingredients={this.state.ingredients} 
+                <CheckoutSummary ingredients={this.props.ingredients}
                                  checkoutCancelled={this.checkoutCancelledHandler}
                                  checkoutContinued={this.checkoutContinuedHandler}
                                  />
+
+                {/**BU KODU render yerine component ile degisti, render ornegi olsun bende degismiyom,
+                    ContactData'yi da ayrıca bagladi.
+                 */}                 
                 <Route path={this.props.match.path + '/contact-data'}                       
-                       render={() => (<ContactData {...this.props} ingredients={this.state.ingredients}/>)}  />                
+                       render={() => (<ContactData {...this.props} ingredients={this.props.ingredients}/>)}  />                
             </div>
          );
      }
 
 }
 
-export default Checkout;
+
+const mapStateToProps = state => {
+    return {
+      ingredients: state.ingredients,
+      totalPrice: state.totalPrice,
+    }
+}
+  
+export default connect(mapStateToProps)(Checkout);

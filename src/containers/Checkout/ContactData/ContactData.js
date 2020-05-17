@@ -6,8 +6,6 @@ import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 
-import * as constants from '../../../store/reducer';
-
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -48,7 +46,8 @@ class ContactData extends Component {
                         required: true,
                         valid: false,
                         minLength:5,
-                        maxLength:5
+                        maxLength:5,
+                        isNumeric: true
                     },
                     touched: false
             },
@@ -74,6 +73,7 @@ class ContactData extends Component {
                     value: 'a@b.com',
                     validation: {
                         required: true,
+                        isEmail: true,
                         valid: true
                     },
                     touched: true
@@ -132,17 +132,11 @@ class ContactData extends Component {
 
         //price'ı da queryString ile gecti, ornek de olsa GECIRMEM!!!
         //o kadar da degil!! redux gelene kadar boyle yapmış. YAPTIRMAM!        
-
-        const sum = Object.keys(this.props.ingredients).reduce( (sum, el) => {
-            console.log("SUM: " + el)        
-            return sum + (this.props.ingredients[el] * constants.INGREDIENT_PRICES[el]);
-            }, constants.INITIAL_PRICE);            
-
-        console.log('SUM:' +sum);
+        //redux geldi tekrar hesaplamistim burada gerek kalmadi.
         this.setState( { loading: true } );
         const order = {
             ingredients: this.props.ingredients,
-            price: sum,
+            price: this.props.ingredients,
             order: formData
         }
         axios.post( '/orders.json', order )
@@ -170,6 +164,16 @@ class ContactData extends Component {
 
         if(rules.maxLength) {
             isValid &= value.length <= rules.maxLength;
+        }
+
+        if (rules.isEmail) {
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        if (rules.isNumeric) {
+            const pattern = /^\d+$/;
+            isValid = pattern.test(value) && isValid
         }
         return isValid;
     }
@@ -224,4 +228,9 @@ class ContactData extends Component {
     }
 }
 
+/**
+ * Buna redux baglamadim props uzserinden geciyorum...
+ * Hangisi daha dogru? Bu sekilde digerine bagimli halde,
+ * Belki bagimliligi kaldirmak icin eklenmeli!
+ */
 export default ContactData;
