@@ -1,4 +1,4 @@
-import * as actions from './actions';
+import * as actions from '../action/actionTypes';
 
 export const INITIAL_PRICE = 4;
 
@@ -12,7 +12,8 @@ export const INGREDIENT_PRICES = {
 const initialState = {
     ingredients: null,
     totalPrice: INITIAL_PRICE,
-    purchasable: false  
+    purchasable: false,
+    error: false  
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,17 +28,14 @@ const reducer = (state = initialState, action) => {
         
             priceAddition = INGREDIENT_PRICES[action.ingredientType];
             oldPrice = state.totalPrice;
-            newPrice = oldPrice + priceAddition;
-
-            
+            newPrice = oldPrice + priceAddition;            
                     
             return{
                 ...state,
                 ingredients: newIngredients,
                 totalPrice: newPrice,
                 purchasable: true
-            }
-        
+            }        
 
         case actions.REMOVE_INGREDIENTS:
             console.log('remove:' + action.ingredientType);
@@ -76,9 +74,15 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ingredients: newIngredients,
                 totalPrice: sum,
-                purchasable: purchasable
+                purchasable: purchasable,
+                error: false
             }
-                
+        case actions.FETCH_INGREDIENTS_FAILED:
+
+            return {
+                ...state,
+                error: true
+            }
         default:
             break;
 
