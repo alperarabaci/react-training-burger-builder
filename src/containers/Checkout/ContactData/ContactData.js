@@ -6,6 +6,10 @@ import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 
+import { connect } from 'react-redux';
+import * as actions from '../../../store/action';
+
+
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -94,8 +98,7 @@ class ContactData extends Component {
                     touched: true 
             }
         },
-        formIsValid: false,
-        loading: false
+        formIsValid: false
     } 
 
     componentDidMount(){
@@ -118,7 +121,6 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault();
         console.log('ORDER CLICKED..', this.props.ingredients);        
-
      
         //state icerisindeki value'lari toplama:
         //bu sefer de for olsun:
@@ -133,22 +135,15 @@ class ContactData extends Component {
         //price'ı da queryString ile gecti, ornek de olsa GECIRMEM!!!
         //o kadar da degil!! redux gelene kadar boyle yapmış. YAPTIRMAM!        
         //redux geldi tekrar hesaplamistim burada gerek kalmadi.
-        this.setState( { loading: true } );
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.ingredients,
+            price: this.props.totalPrice,
             order: formData
         }
-        axios.post( '/orders.json', order )
-            .then( response => {
-                this.setState( { loading: false} );
-                console.log('ORDER SEND...');
-                this.props.history.push('/');
-            } )
-            .catch( error => {
-                console.log(error);
-                this.setState( { loading: false } );
-            } );           
+        //bunu alttakinin icinde yapmayi beceremedim?
+        //birden fazla dispatch diyebiliyormuşuz
+        //this.props.onLoadingStart();
+        this.props.onOrderPurchased(order);
     }
 
     checkValidity(value, rules){
@@ -215,7 +210,7 @@ class ContactData extends Component {
                     <Button btnType="Success" disabled={!this.state.formIsValid} >ORDER</Button>
                 </form>                
         );
-        if(this.state.loading){
+        if(this.props.loading){
             form = <Spinner />
           }
 
@@ -232,5 +227,20 @@ class ContactData extends Component {
  * Buna redux baglamadim props uzserinden geciyorum...
  * Hangisi daha dogru? Bu sekilde digerine bagimli halde,
  * Belki bagimliligi kaldirmak icin eklenmeli!
+ * 307: Baglamak farz oldu. :)
  */
-export default ContactData;
+
+const mapStateToProps = state => {
+    return {
+      loading: state.order.loading,      
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        onOrderPurchased: (order) => dispatch(actions.purchaseBurger(order))        
+    }
+  }
+  
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

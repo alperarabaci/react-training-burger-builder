@@ -16,7 +16,7 @@ const initialState = {
     error: false  
 };
 
-const reducer = (state = initialState, action) => {
+const burgerReducer = (state = initialState, action) => {
 
     let priceAddition, oldPrice, newPrice, newIngredients = null;    
     let purchasable = true;
@@ -91,4 +91,4 @@ const reducer = (state = initialState, action) => {
     return state;
    };
     
-export default reducer;
+export default burgerReducer;
