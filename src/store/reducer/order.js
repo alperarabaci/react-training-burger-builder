@@ -13,7 +13,7 @@ const orderReducer = (state = initialState, action) => {
 
     switch(action.type){
         case actionTypes.PURCHASE_INIT:
-            updateObject(state, {purchased:false});
+            return updateObject(state, {purchased:false});
             /**
              * state, geri kalanlar seklinde
              * eski hali
