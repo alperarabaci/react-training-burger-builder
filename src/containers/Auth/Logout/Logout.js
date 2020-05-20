@@ -5,8 +5,13 @@ import * as actions from "../../../store/action";
 import { Redirect } from "react-router-dom";
 
 class Logout extends Component {
-
-    componentWillMount(){
+    /**
+     * Eleman componentDidMount kullandı, ben de degistim
+     * Zaten bunu kullaninca hata veriyor.
+     * Onun disinda ayni seyi yazmisiz, aferim 
+     * duzgun yaziyor keretta keretta. :))  
+     */
+    componentDidMount(){
         this.props.onLogOut();
     }
 
