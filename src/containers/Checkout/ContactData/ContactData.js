@@ -143,7 +143,7 @@ class ContactData extends Component {
         //bunu alttakinin icinde yapmayi beceremedim?
         //birden fazla dispatch diyebiliyormuşuz
         //this.props.onLoadingStart();
-        this.props.onOrderPurchased(order);
+        this.props.onOrderPurchased(order, this.props.token);
     }
 
     checkValidity(value, rules){
@@ -233,12 +233,13 @@ class ContactData extends Component {
 const mapStateToProps = state => {
     return {
       loading: state.order.loading,      
+      token: state.auth.token
     }
   }
   
   const mapDispatchToProps = dispatch => {
     return {
-        onOrderPurchased: (order) => dispatch(actions.purchaseBurger(order))        
+        onOrderPurchased: (order, token) => dispatch(actions.purchaseBurger(order, token))        
     }
   }
   

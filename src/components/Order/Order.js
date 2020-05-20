@@ -19,11 +19,11 @@ const order = (props) => {
     Elaman cok guzel yapti yine:
     */
    let ingredients = [];
-   for(let ingredientName in props.order.ingredients){
+   for(let ingredientName in props.ingredients){
         ingredients.push(
             {
                 name: ingredientName,
-                amount: props.order.ingredients[ingredientName]
+                amount: props.ingredients[ingredientName]
             }
         )
    }
@@ -41,7 +41,7 @@ const order = (props) => {
     return (
         <div className={classes.Order}>
             <p>Ingredients: {ingOutput}</p>
-            <p>Price <strong>{(+props.order.price).toFixed(2)}</strong></p>
+            <p>Price <strong>{(+props.price).toFixed(2)}</strong></p>
         </div>
     );
 
