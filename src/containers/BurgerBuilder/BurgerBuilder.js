@@ -43,7 +43,7 @@ class BurgerBuilder extends Component {
      * ile bu isi halletti. 
      */
     if(this.props.isAuthenticated){
-
+      
       this.setState({purchasing: true});
     }else {
       /**

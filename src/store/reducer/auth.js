@@ -32,7 +32,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.authData.idToken,
-                userId: action.authData.email,
+                userId: action.authData.localId,
                 error: null,
                 loading: false
             }

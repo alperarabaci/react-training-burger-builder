@@ -138,7 +138,8 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            order: formData
+            order: formData,
+            userId: this.props.userId
         }
         //bunu alttakinin icinde yapmayi beceremedim?
         //birden fazla dispatch diyebiliyormuşuz
@@ -233,7 +234,8 @@ class ContactData extends Component {
 const mapStateToProps = state => {
     return {
       loading: state.order.loading,      
-      token: state.auth.token
+      token: state.auth.token,
+      userId: state.auth.userId
     }
   }
   
