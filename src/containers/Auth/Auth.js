@@ -10,6 +10,7 @@ import * as actions from '../../store/action';
 
 import { Redirect } from "react-router-dom";
 
+import {checkValidity} from '../../shared/utility';
 
 class Auth extends Component {
 
@@ -54,7 +55,7 @@ class Auth extends Component {
         const updatedFormElement = {...updatedOrderForm[inputIdentifier]};
         updatedFormElement.touched = true;
         updatedFormElement.value = event.target.value;
-        updatedFormElement.validation.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.validation.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         console.log('updatedFormElement', updatedFormElement);
 
@@ -72,35 +73,7 @@ class Auth extends Component {
             }           
         }
         return true;  
-    }
- 
-
-    checkValidity(value, rules){
-        let isValid = true;
-
-        if(rules.required){
-            isValid &= value.trim() !==  '';
-        }
-
-        if(rules.minLength) {
-            isValid &= value.length >= rules.minLength;
-        }
-
-        if(rules.maxLength) {
-            isValid &= value.length <= rules.maxLength;
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-        return isValid;
-    }
+    }    
 
     orderHandler = (event) =>{
         event.preventDefault();

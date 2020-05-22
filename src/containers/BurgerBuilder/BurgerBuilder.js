@@ -13,7 +13,7 @@ import * as actions from '../../store/action/';
 import axios from '../../axios-orders';
 
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   //constructor eski dedi, bunla devam ediyor:
   state = {    
     purchasing: false,

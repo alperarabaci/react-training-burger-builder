@@ -8,6 +8,7 @@ import axios from '../../../axios-orders';
 
 import { connect } from 'react-redux';
 import * as actions from '../../../store/action';
+import {checkValidity} from '../../../shared/utility';
 
 
 class ContactData extends Component {
@@ -147,32 +148,7 @@ class ContactData extends Component {
         this.props.onOrderPurchased(order, this.props.token);
     }
 
-    checkValidity(value, rules){
-        let isValid = true;
-
-        if(rules.required){
-            isValid &= value.trim() !==  '';
-        }
-
-        if(rules.minLength) {
-            isValid &= value.length >= rules.minLength;
-        }
-
-        if(rules.maxLength) {
-            isValid &= value.length <= rules.maxLength;
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-        return isValid;
-    }
+    
 
     inputChangeHandler = (event, inputIdentifier) => {
         console.log(event.target.value);
@@ -180,7 +156,7 @@ class ContactData extends Component {
         const updatedFormElement = {...updatedOrderForm[inputIdentifier]};
         updatedFormElement.touched = true;
         updatedFormElement.value = event.target.value;
-        updatedFormElement.validation.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.validation.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         console.log('updatedFormElement', updatedFormElement);
 
